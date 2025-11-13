@@ -9,11 +9,11 @@ services:
       labels:
         - "traefik.enable=true"
         - "traefik.http.routers.angel.entrypoints=http"
-        - "traefik.http.routers.angel.rule=Host(`angel.pyangel.com`)"
+        - "traefik.http.routers.angel.rule=Host(`angel.byronrm.com`)"
         - "traefik.http.middlewares.angel-https-redirect.redirectscheme.scheme=https"
         - "traefik.http.routers.angel.middlewares=angel-https-redirect"
         - "traefik.http.routers.angel-secure.entrypoints=https"
-        - "traefik.http.routers.angel-secure.rule=Host(`angel.pyangel.com`)"
+        - "traefik.http.routers.angel-secure.rule=Host(`angel.byronrm.com`)"
         - "traefik.http.routers.angel-secure.tls=true"
         - "traefik.http.routers.angel-secure.tls.certresolver=http"
         - "traefik.http.routers.angel-secure.service=angel"
