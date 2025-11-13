@@ -2,7 +2,7 @@ version: "3.8"
 
 services:
   angel:
-    image: angel:latest
+    image: ghcr.io/angel0314ist/pratica_ma-ana:latest
     build: .
     deploy:
       replicas: 1
