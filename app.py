@@ -8,7 +8,7 @@ def home():
 
 @app.route('/saludo/<nombre>')
 def saludo(nombre):
-    return f"<h2>Hola {nombre}, bienvenido a angel.byronrm.com</h2>"
+    return f"<h2>Hola {nombre}, bienvenido a angel.pyangel.com</h2>"
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=80)
