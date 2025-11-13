@@ -1,0 +1,27 @@
+version: "3.8"
+
+services:
+  angel:
+    image: angel:latest
+    build: .
+    deploy:
+      replicas: 1
+      labels:
+        - "traefik.enable=true"
+        - "traefik.http.routers.angel.entrypoints=http"
+        - "traefik.http.routers.angel.rule=Host(`angel.pyangel.com`)"
+        - "traefik.http.middlewares.angel-https-redirect.redirectscheme.scheme=https"
+        - "traefik.http.routers.angel.middlewares=angel-https-redirect"
+        - "traefik.http.routers.angel-secure.entrypoints=https"
+        - "traefik.http.routers.angel-secure.rule=Host(`angel.pyangel.com`)"
+        - "traefik.http.routers.angel-secure.tls=true"
+        - "traefik.http.routers.angel-secure.tls.certresolver=http"
+        - "traefik.http.routers.angel-secure.service=angel"
+        - "traefik.http.services.angel.loadbalancer.server.port=80"
+        - "traefik.docker.network=traefik-public"
+    networks:
+      - traefik-public
+
+networks:
+  traefik-public:
+    external: true
