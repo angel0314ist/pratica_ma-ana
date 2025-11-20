@@ -91,4 +91,4 @@ jobs:
             echo "==> descargando la imagen del GHCR"
             # docker pull ghcr.io/angel0314ist/pratica_ma-ana:latest
             echo "==> Desplegando stack..."
-            docker stack deploy -c stack.yml --with-registry-auth angel
+            docker stack deploy -c /home/${{ secrets.VPS_USER }}/despliegue/stack.yml --with-registry-auth angel
