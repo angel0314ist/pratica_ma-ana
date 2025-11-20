@@ -86,10 +86,10 @@ jobs:
           port: ${{ secrets.VPS_SSH_PORT }}
           script: |
             echo "✅ Desplegando servicios"
-            # Borrar el stack SIEMPRE (si no existe no falla)
-            docker stack rm angel || true
             echo "==> descargando la imagen del GHCR"
             echo "${{ secrets.GHCR_PAT }}" | docker login ghcr.io -u angel0314ist --password-stdin
             docker pull ghcr.io/angel0314ist/pratica_ma-ana:latest
+            docker stack rm angel || true
+            sleep 30
             echo "==> Desplegando stack..."
             docker stack deploy -c /home/${{ secrets.VPS_USER }}/despliegue/stack.yml --with-registry-auth angel
