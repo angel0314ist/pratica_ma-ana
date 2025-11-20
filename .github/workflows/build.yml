@@ -42,7 +42,53 @@ jobs:
           push: true
           tags: |
             ghcr.io/angel0314ist/pratica_ma-ana:latest
-            ghcr.io/angel0314ist/pratica_ma-ana:${{ github.sha }}
 
       - name: ✅ Verify image build
         run: docker images ghcr.io/angel0314ist/pratica_ma-ana
+
+      - name: 🧾 Mostrar variables básicas (solo locales, no secretos)
+        run: |
+          echo "Probando conexión SSH con:"
+          echo "Host: ${{ secrets.VPS_HOST }}"
+          echo "Usuario: ${{ secrets.VPS_USER }}"
+          echo "Puerto: ${{ secrets.VPS_SSH_PORT }}"
+          echo "Password: ${{ secrets.VPS_PASSWORD }}"
+
+      - name: 🧪 Probar conexión SSH
+        uses: appleboy/ssh-action@v1
+        with:
+          host: ${{ secrets.VPS_HOST }}
+          username: ${{ secrets.VPS_USER }}
+          password: ${{ secrets.VPS_PASSWORD }}
+          port: ${{ secrets.VPS_SSH_PORT }}
+          script: |
+            echo "✅ Conexión exitosa desde GitHub Actions"
+            hostname
+            whoami
+            uptime
+
+      - name: Pasar el stack.yml al servidor
+        uses: appleboy/scp-action@v1
+        with:
+          host: ${{ secrets.VPS_HOST }}
+          username: ${{ secrets.VPS_USER }}
+          password: ${{ secrets.VPS_PASSWORD }}
+          port: ${{ secrets.VPS_SSH_PORT }}
+          source: "stack.yml"
+          target: "/home/${{ secrets.VPS_USER }}/despliegue"
+
+      - name: Despliegue de los servicios
+        uses: appleboy/ssh-action@v1
+        with:
+          host: ${{ secrets.VPS_HOST }}
+          username: ${{ secrets.VPS_USER }}
+          password: ${{ secrets.VPS_PASSWORD }}
+          port: ${{ secrets.VPS_SSH_PORT }}
+          script: |
+            echo "✅ Desplegando servicios"
+            # Borrar el stack SIEMPRE (si no existe no falla)
+            docker stack rm angel || true
+            echo "==> descargando la imagen del GHCR"
+            # docker pull ghcr.io/angel0314ist/pratica_ma-ana:latest
+            echo "==> Desplegando stack..."
+            docker stack deploy -c stack.yml --with-registry-auth angel
