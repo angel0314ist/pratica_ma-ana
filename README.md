@@ -46,6 +46,6 @@ Ejecución con Docker: docker run -p 80:80 angel
 ## 7Despliegue manual (opcional)
 docker stack deploy -c stack.yml --with-registry-auth angel
 
-## Resultado final
+## Resultado Final
 Tu aplicación Flask queda disponible en: https://angel.byronrm.com  
 Con HTTPS automático, servicio desplegado en Docker Swarm y CI/CD funcionando sin intervención manual.
